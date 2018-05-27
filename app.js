@@ -6,8 +6,6 @@ document.getElementById('menu-toggle').addEventListener('click', (e) => {
   e.preventDefault();
 });
 
-
-
 var position = [27.1959739, 78.02423269999997];
 
 function showGoogleMaps() {
