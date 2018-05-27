@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 const key = config.mapsKey;
 
 document.getElementById('menu-toggle').addEventListener('click', (e) => {
@@ -7,6 +7,16 @@ document.getElementById('menu-toggle').addEventListener('click', (e) => {
 });
 
 var position = [27.1959739, 78.02423269999997];
+
+function loadScript() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?' +
+    'key=' + key + '&callback=showGoogleMaps';
+  document.body.appendChild(script);
+}
+
+document.addEventListener('DOMContentLoaded', loadScript);
 
 function showGoogleMaps() {
 
@@ -32,4 +42,3 @@ function showGoogleMaps() {
   });
 }
 
-google.maps.event.addDomListener(window, 'load', showGoogleMaps);
