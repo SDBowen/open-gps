@@ -1,21 +1,27 @@
+/* eslint-disable */
 /* eslint-env browser */
 const key = config.mapsKey;
 
+// Sidebar toggle event
 document.getElementById('sidebarCollapse').addEventListener('click', (e) => {
   document.getElementById('sidebar').classList.toggle('active');
   e.preventDefault();
 });
 
-const position = [27.1959739, 78.02423269999997];
+// Map script load event
+document.addEventListener('DOMContentLoaded', InsertMapScriptOnLoad);
 
-function loadScript() {
+function InsertMapScriptOnLoad() {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=showGoogleMaps`;
   document.body.appendChild(script);
 }
 
-document.addEventListener('DOMContentLoaded', loadScript);
+// Set map center location
+const position = [27.1959739, 78.02423269999997];
+
+let map;
 
 function showGoogleMaps() {
   const latLng = new google.maps.LatLng(position[0], position[1]);
@@ -30,17 +36,19 @@ function showGoogleMaps() {
     mapTypeControl: false,
   };
 
-  const map = new google.maps.Map(
+  map = new google.maps.Map(
     document.getElementById('googleMap'),
     mapOptions,
   );
+}
+// Show the default red marker at the location
+const createMarker = function () {
 
-  // Show the default red marker at the location
-  const marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
+  marker = new google.maps.Marker({
+    position: { lat: 27.1959739, lng: 78.02423269999997 },
     draggable: false,
     animation: google.maps.Animation.DROP
   });
+  return marker;
 }
-
+//createMarker().setMap(map)
