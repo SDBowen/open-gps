@@ -11,6 +11,11 @@ document.getElementById('sidebarCollapse').addEventListener('click', (e) => {
 // Map script load event
 document.addEventListener('DOMContentLoaded', InsertMapScriptOnLoad);
 
+// Menu button listener
+document.getElementById('tracker-1').addEventListener('click', function () {
+  createMarker();
+});
+
 function InsertMapScriptOnLoad() {
   const script = document.createElement('script');
   script.type = 'text/javascript';
@@ -49,6 +54,5 @@ const createMarker = function () {
     draggable: false,
     animation: google.maps.Animation.DROP
   });
-  return marker;
+  marker.setMap(map);
 }
-//createMarker().setMap(map)
