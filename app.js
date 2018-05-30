@@ -12,9 +12,7 @@ document.getElementById('sidebarCollapse').addEventListener('click', (e) => {
 document.addEventListener('DOMContentLoaded', InsertMapScriptOnLoad);
 
 // Menu button listener
-document.getElementById('tracker-1').addEventListener('click', function () {
-  createMarker();
-});
+document.getElementById('tracker-1').addEventListener('click', createMarker);
 
 function InsertMapScriptOnLoad() {
   const script = document.createElement('script');
@@ -47,7 +45,7 @@ function showGoogleMaps() {
   );
 }
 // Show the default red marker at the location
-const createMarker = function () {
+function createMarker() {
 
   marker = new google.maps.Marker({
     position: { lat: 27.1959739, lng: 78.02423269999997 },
