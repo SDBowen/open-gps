@@ -1,9 +1,8 @@
-/* eslint-disable */
-/* eslint-env browser */
 const key = config.mapsKey;
+let marker;
 
 // Sidebar toggle event
-document.getElementById('sidebarCollapse').addEventListener('click', (e) => {
+document.getElementById('sidebarCollapse').addEventListener('click', e => {
   document.getElementById('sidebar').classList.toggle('active');
   e.preventDefault();
 });
@@ -22,7 +21,7 @@ function InsertMapScriptOnLoad() {
 }
 
 // Set map center location
-const position = [27.1959739, 78.02423269999997];
+const position = [33.502351, -111.926193];
 
 let map;
 
@@ -36,21 +35,43 @@ function showGoogleMaps() {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: latLng,
     fullscreenControl: false,
-    mapTypeControl: false,
+    mapTypeControl: false
   };
 
-  map = new google.maps.Map(
-    document.getElementById('googleMap'),
-    mapOptions,
-  );
+  map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 }
 // Show the default red marker at the location
 function createMarker() {
-
   marker = new google.maps.Marker({
-    position: { lat: 27.1959739, lng: 78.02423269999997 },
+    position: { lat: 33.502351, lng: -111.926193 },
     draggable: false,
     animation: google.maps.Animation.DROP
   });
   marker.setMap(map);
+}
+
+const numDeltas = 100;
+const delay = 10; // milliseconds
+let i = 0;
+let deltaLat;
+let deltaLng;
+
+function moveMarker() {
+  position[0] += deltaLat;
+  position[1] += deltaLng;
+  const latlng = new google.maps.LatLng(position[0], position[1]);
+  marker.setTitle(`Latitude:${position[0]} | Longitude:${position[1]}`);
+  marker.setPosition(latlng);
+  if (i !== numDeltas) {
+    i += 1;
+    setTimeout(moveMarker, delay);
+  }
+}
+
+// transition([22.502351, -11.926193]);
+function transition(result) {
+  i = 0;
+  deltaLat = (result[0] - position[0]) / numDeltas;
+  deltaLng = (result[1] - position[1]) / numDeltas;
+  moveMarker();
 }
