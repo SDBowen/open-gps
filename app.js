@@ -22,7 +22,7 @@ function InsertMapScriptOnLoad() {
 }
 
 // Set map center location
-const position = [33.502351, -111.926193];
+const position = [41.8333925, -88.0121415];
 
 let map;
 
@@ -30,7 +30,7 @@ function showGoogleMaps() {
   const latLng = new google.maps.LatLng(position[0], position[1]);
 
   const mapOptions = {
-    zoom: 16, // initialize zoom level - the max value is 21
+    zoom: 10, // initialize zoom level - the max value is 21
     streetViewControl: false, // hide the yellow Street View pegman
     scaleControl: false, // allow users to zoom the Google Map
     mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -76,27 +76,31 @@ function transition(result) {
   deltaLng = (result[1] - position[1]) / numDeltas;
   moveMarker();
 }
-
 const URL = `http://www.ctabustracker.com/bustime/api/v2/getvehicles?key=${ctaKey}&format=json&rt=126`;
 
-function apiCall() {
-  fetch(URL)
+function getUpdatedCoordinates() {
+  return fetch(URL)
     .then(parseJSON)
-    .then(displayBusLocation);
+    .then(getLatAndLonData);
 }
 
+// Parse JSON data from api
 function parseJSON(response) {
-  console.log(response);
   return response.json().then(data => data['bustime-response'].vehicle);
 }
 
-function displayBusLocation(data) {
+// Get coordinates from API data
+function getLatAndLonData(data) {
   const vehicle = data[0];
 
   let lat = vehicle.lat;
   let lon = vehicle.lon;
-  
-  console.log(lon);
+  let newPosition = [lat, lon]
+
+  return newPosition;
 }
 
-apiCall();
+getUpdatedCoordinates().then(newPosition => {
+  console.log(newPosition);
+});
+//setInterval(getUpdatedCoordinates, 25000);
