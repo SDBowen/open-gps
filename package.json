@@ -1,0 +1,23 @@
+{
+  "name": "open-gps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "develop": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SDBowen/open-gps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SDBowen/open-gps/issues"
+  },
+  "homepage": "https://github.com/SDBowen/open-gps#readme"
+}
