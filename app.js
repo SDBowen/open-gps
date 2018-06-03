@@ -1,4 +1,5 @@
 const key = config.mapsKey;
+const ctaKey = config.ctaKey;
 let marker;
 
 // Sidebar toggle event
@@ -75,3 +76,27 @@ function transition(result) {
   deltaLng = (result[1] - position[1]) / numDeltas;
   moveMarker();
 }
+
+const URL = `http://www.ctabustracker.com/bustime/api/v2/getvehicles?key=${ctaKey}&format=json&rt=126`;
+
+function apiCall() {
+  fetch(URL)
+    .then(parseJSON)
+    .then(displayBusLocation);
+}
+
+function parseJSON(response) {
+  console.log(response);
+  return response.json().then(data => data['bustime-response'].vehicle);
+}
+
+function displayBusLocation(data) {
+  const vehicle = data[0];
+
+  let lat = vehicle.lat;
+  let lon = vehicle.lon;
+  
+  console.log(lon);
+}
+
+apiCall();
