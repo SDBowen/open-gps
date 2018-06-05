@@ -101,7 +101,9 @@ function getLatAndLonData(data) {
   return newPosition;
 }
 
-getUpdatedCoordinates().then(newPosition => {
-  console.log(newPosition);
-});
-//setInterval(getUpdatedCoordinates, 25000);
+setInterval(function() {
+  getUpdatedCoordinates().then(newPosition => {
+    console.log(newPosition);
+    transition(newPosition);
+  });
+}, 5000);
