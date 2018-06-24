@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
@@ -21,9 +22,22 @@ router.post('/register', (req, res) => {
     }
     const newUser = new User({
       name: req.body.name,
-      email: req.body.name,
+      email: req.body.email,
       password: req.body.password
     });
+
+    bcrypt.genSalt(10, (bcryptErr, salt) => {
+      bcrypt.hash(newUser.password, salt, (hashErr, hash) => {
+        if (hashErr) throw hashErr;
+        newUser.password = hash;
+        newUser
+          .save()
+          .then(completeUser => res.json(completeUser))
+          .catch(err => console.log(err));
+      });
+    });
+    // to clear ESLint no function return (best practice?)
+    return undefined;
   });
 });
 
