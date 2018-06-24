@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 // Routes
-const users = require('./routes/api/users');
-const settings = require('./routes/api/settings');
-const reports = require('./routes/api/reports');
+const users = require('./routes/users');
+const settings = require('./routes/settings');
+const reports = require('./routes/reports');
 
 const app = express();
 
