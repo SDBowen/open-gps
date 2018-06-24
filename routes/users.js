@@ -8,6 +8,7 @@ const router = express.Router();
 
 // Load input validation
 const validateRegisterInput = require('../validation/register');
+const validateLoginInput = require('../validation/login');
 
 // Load user model
 const User = require('../models/User');
@@ -29,7 +30,8 @@ router.post('/register', (req, res) => {
   }
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      return res.status(400).json({ email: 'Email already registered' });
+      errors.email = 'Email already registered';
+      return res.status(400).json(errors);
     }
     const newUser = new User({
       name: req.body.name,
@@ -51,12 +53,22 @@ router.post('/register', (req, res) => {
     // to clear ESLint no function return (best practice?)
     return undefined;
   });
+  // ****************************************************
+  // to clear ESLint no function return (best practice?)
+  return undefined;
 });
 
 // @Router  GET /users/login
 // @Desc    Login user / Return JWT token
 // @Access  Public
 router.post('/login', (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const { email } = req.body;
   const { password } = req.body;
 
@@ -64,7 +76,8 @@ router.post('/login', (req, res) => {
   User.findOne({ email }).then(user => {
     // Check user email
     if (!user) {
-      return res.status(404).json({ email: 'User not found' });
+      errors.email = 'User not found';
+      return res.status(404).json(errors);
     }
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -78,9 +91,10 @@ router.post('/login', (req, res) => {
           res.json({ success: true, token: `Bearer ${token}` });
         });
       } else {
-        return res.status(400).json({ password: 'Password incorrect' });
+        errors.password = 'Password incorrect';
+        return res.status(400).json(errors);
       }
-      // ****************************************************
+      // *************************************
       // to clear ESLint no function return (best practice?)
       return undefined;
     });
@@ -88,6 +102,9 @@ router.post('/login', (req, res) => {
     // to clear ESLint no function return (best practice?)
     return undefined;
   });
+  // ****************************************************
+  // to clear ESLint no function return (best practice?)
+  return undefined;
 });
 
 // @Router  GET /users/current
