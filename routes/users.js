@@ -1,5 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const keys = require('../config/config');
 
 const router = express.Router();
 
@@ -35,7 +37,7 @@ router.post('/register', (req, res) => {
           .catch(err => console.log(err));
       });
     });
-    // ***********
+    // ****************************************************
     // to clear ESLint no function return (best practice?)
     return undefined;
   });
@@ -57,15 +59,22 @@ router.post('/login', (req, res) => {
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
-        res.json({ msg: 'Success' });
+        // User matched
+        // JWT payload
+        const payload = { id: user.id, name: user.name };
+
+        // Sign token
+        jwt.sign(payload, keys.tokenKey, { expiresIn: 36000 }, (err, token) => {
+          res.json({ success: true, token: `Bearer ${token}` });
+        });
       } else {
         return res.status(400).json({ password: 'Password incorrect' });
       }
-      // ***********
+      // ****************************************************
       // to clear ESLint no function return (best practice?)
       return undefined;
     });
-    // ***********
+    // ****************************************************
     // to clear ESLint no function return (best practice?)
     return undefined;
   });
